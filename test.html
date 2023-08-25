@@ -1,0 +1,60 @@
+<button id="btn">Pay now</button>
+<script type="text/javascript" src="https://checkout.razorpay.com/v1/razorpay.js"></script>
+<script>
+    var razorpay = new Razorpay({
+        key: 'rzp_live_rUN93PAO8mDFKa',
+        // logo, displayed in the payment processing popup
+    });
+    var data = {
+        amount: 0, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+        currency: 'INR', // Default is INR. We support more than 90 currencies.
+        customer_id: 'cust_MSeoyMrCBOZ8se',
+        recurring: 1,
+        order_id: 'order_MSh9VX9APyDDu5', // Replace with Order ID generated in Step 4
+        callback_url: 'https://www.google.com/',
+        contact: '9412625280',
+        email: 'example@gmail.com',
+        method: 'emandate',
+        bank: 'HDFC',
+        auth_type: 'netbanking',
+        'bank_account[name]': 'SHUBHANGI GUPTA',
+        'bank_account[account_number]': '50100183769252',
+        'bank_account[account_type]': 'savings',
+        'bank_account[ifsc]': 'HDFC0000088'
+    };
+
+    var btn = document.querySelector('#btn');
+    btn.addEventListener('click', function() {
+            // has to be placed within user initiated context, such as click, in order for popup to open.
+            razorpay.createPayment(data);
+
+            razorpay.on('payment.success', function(resp) {
+                alert(resp.razorpay_payment_id),
+                    alert(resp.razorpay_order_id),
+                    alert(resp.razorpay_signature)
+            }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+
+            razorpay.on('payment.error', function(resp) {
+                alert(response.error.code);
+                alert(response.error.description);
+                alert(response.error.source);
+                alert(response.error.step);
+                alert(response.error.reason);
+            }); // will pass error object to error handler
+
+        })
+        // var rzp1 = new Razorpay(options);
+        // rzp1.on('payment.failed', function(response) {
+        //     alert(response.error.code);
+        //     alert(response.error.description);
+        //     alert(response.error.source);
+        //     alert(response.error.step);
+        //     alert(response.error.reason);
+        //     alert(response.error.metadata.order_id);
+        //     alert(response.error.metadata.payment_id);
+        // });
+        // document.getElementById('btn').onclick = function(e) {
+        //     rzp1.open();
+        //     e.preventDefault();
+        // }
+</script>
